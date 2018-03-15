@@ -23,11 +23,13 @@ namespace WorkflowCoreSample
         protected virtual void RunImpl(IStepExecutionContext context) {  }
     }
 
-    public class SayHello : StepBase
+    public class Welcome : StepBase
     {
+        public string Text { get; set; } = "Welcome to our self service desk\n";
+
         protected override void RunImpl(IStepExecutionContext context)
         {
-            Console.WriteLine("Welcome to our self service desk\n");
+            Console.WriteLine(Text);
         }
     }
 
@@ -51,11 +53,13 @@ namespace WorkflowCoreSample
         protected override void RunImpl(IStepExecutionContext context)
         {
             Console.WriteLine($"{Name}, let us take your photo.");
+
+            // pretend we are doing something ...
             Thread.Sleep(1000);
 
             if (Rand.NextDouble() > 0.5)
             {
-                // simulate error:
+                // simulate error with probability of 50%
                 const string error = "ERR: Camera failure";
                 Console.WriteLine(error);
                 throw new Exception(error);

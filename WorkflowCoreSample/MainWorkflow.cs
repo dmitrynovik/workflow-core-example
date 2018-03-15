@@ -6,31 +6,37 @@ namespace WorkflowCoreSample
 {
     public class MainWorkflow : IWorkflow<DataContext>
     {
-        public const string SID = "Main Workflow";
+        public const string Name = "Main Workflow";
 
-        public string Id => SID;
+        public string Id => Name;
         public int Version => 1;
 
         public void Build(IWorkflowBuilder<DataContext> builder)
         {
-            builder.StartWith<SayHello>()
-                    .Output(step => step.Name, _ => "some non-empty text")
+            // Welcome screen
+            builder.StartWith<Welcome>()
+                .Output(data => data.Name, step => step.Text)
+                // Loop until the input is empty:
                 .While(data => !string.IsNullOrEmpty(data.Name))
-                    .Do(x => x                        
+                    .Do(x => x                   
+                        // Enter person name:
                         .StartWith<EnterName>()
-                            .Output(step => step.Name, data => data.Name)
+                            .Output(data => data.Name, step => step.Name)
                         .If(data => !string.IsNullOrEmpty(data.Name))
                             .Do(y => 
+                                // Take photo:
                                 y.StartWith<TakePhoto>()
                                     .Input(step => step.Name, data => data.Name)
-                                    .Output(step => step.Name, data => data.Name)
+                                    .Output(data => data.Name, step => step.Name)
                                     // handle camera errors => retry
                                     // what it lacks here is the different handler for different errors
                                     .OnError(WorkflowErrorHandling.Retry, TimeSpan.FromSeconds(2))
+                                // Say 'thank you' and move to next person:
                                 .Then<FinishPerson>()
-                                    .Input(step => step.Message, data => $"Thank you {data.Name}, you are done.")
+                                    .Input(step => step.Message, data => $"Thank you {data.Name}, you are all done.")
                         )
                 )
+                // Finish:
                 .Then<SayGoodbye>();
         }
     }
