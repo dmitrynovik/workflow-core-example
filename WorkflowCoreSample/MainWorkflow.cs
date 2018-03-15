@@ -1,4 +1,6 @@
-﻿using WorkflowCore.Interface;
+﻿using System;
+using WorkflowCore.Interface;
+using WorkflowCore.Models;
 
 namespace WorkflowCoreSample
 {
@@ -22,6 +24,7 @@ namespace WorkflowCoreSample
                             y.StartWith<TakePhoto>()
                                 .Input(step => step.Name, data => data.Name)
                                 .Output(step => step.Name, data => data.Name)
+                                .OnError(WorkflowErrorHandling.Retry, TimeSpan.FromSeconds(2))
                             .Then<FinishPerson>()
                                 .Input(step => step.Message, data => $"Thank you {data.Name}, you are done.")
                         )

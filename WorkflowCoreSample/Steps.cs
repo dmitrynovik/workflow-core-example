@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -43,11 +44,22 @@ namespace WorkflowCoreSample
 
     public class TakePhoto : StepBase
     {
+        static readonly Random Rand = new Random(DateTime.Now.GetHashCode());
+
         public string Name { get; set; }
 
         protected override void RunImpl(IStepExecutionContext context)
         {
             Console.WriteLine($"{Name}, let us take your photo.");
+            Thread.Sleep(1000);
+
+            if (Rand.NextDouble() > 0.5)
+            {
+                // simulate error:
+                const string error = "ERR: Camera failure";
+                Console.WriteLine(error);
+                throw new Exception(error);
+            }
         }
     }
 
