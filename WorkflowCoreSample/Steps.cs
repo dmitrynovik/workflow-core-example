@@ -26,7 +26,7 @@ namespace WorkflowCoreSample
     {
         protected override void RunImpl(IStepExecutionContext context)
         {
-            Console.WriteLine("Welcome to our self service desk.");
+            Console.WriteLine("Welcome to our self service desk\n");
         }
     }
 
@@ -36,28 +36,36 @@ namespace WorkflowCoreSample
 
         protected override void RunImpl(IStepExecutionContext context)
         {
-            Console.WriteLine("Please enter your name or hit ENTER to exit");
+            Console.WriteLine("\nPlease enter your name or hit ENTER to exit");
             Name = Console.ReadLine();
         }
     }
 
-    public class ScanImage : StepBase
+    public class TakePhoto : StepBase
     {
         public string Name { get; set; }
 
         protected override void RunImpl(IStepExecutionContext context)
         {
-            Console.WriteLine($"{Name}, please scan your passport");
+            Console.WriteLine($"{Name}, let us take your photo.");
         }
     }
 
-    public class Finish : StepBase
+    public class FinishPerson : StepBase
     {
         public string Message { get; set; }
 
         protected override void RunImpl(IStepExecutionContext context)
         {
             Console.WriteLine(Message);
+        }
+    }
+
+    public class SayGoodbye : StepBase
+    {
+        protected override void RunImpl(IStepExecutionContext context)
+        {
+            Console.WriteLine("\nSee you again.");
         }
     }
 }
