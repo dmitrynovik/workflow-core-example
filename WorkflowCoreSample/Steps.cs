@@ -4,6 +4,11 @@ using WorkflowCore.Models;
 
 namespace WorkflowCoreSample
 {
+    public class DataContext
+    {
+        public string Name { get; set; }
+    }
+
     public class StepBase : StepBody
     {
         public override ExecutionResult Run(IStepExecutionContext context)
@@ -18,13 +23,32 @@ namespace WorkflowCoreSample
 
     public class Start : StepBase
     {
+        public string Name { get; set; }
+
+        protected override void RunImpl(IStepExecutionContext context)
+        {
+            Console.WriteLine("Please enter your name");
+            Name = Console.ReadLine();
+        }
     }
 
     public class ScanImage : StepBase
     {
+        public string Name { get; set; }
+
+        protected override void RunImpl(IStepExecutionContext context)
+        {
+            Console.WriteLine($"\t{Name}, please scan your passport");
+        }
     }
 
     public class Finish : StepBase
     {
+        public string Message { get; set; }
+
+        protected override void RunImpl(IStepExecutionContext context)
+        {
+            Console.WriteLine(Message);
+        }
     }
 }

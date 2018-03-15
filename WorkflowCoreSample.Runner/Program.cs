@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using WorkflowCore.Interface;
 
@@ -9,11 +10,16 @@ namespace WorkflowCoreSample.Runner
         static void Main()
         {
             var host = ConfigureWorkflowHost();
-            var result = host.StartWorkflow("Main Workflow", 1, null).Result;
-            Console.WriteLine(result);
-            
-            Console.Read();
-            host.Stop();
+            var wId = host.StartWorkflow(MainWorkflow.SID, 1, null).Result;
+            Console.WriteLine($"Started {MainWorkflow.SID} instance with Id: {wId}");
+
+            while (true)
+            {
+                Thread.Sleep(1000);
+            }
+
+            //Console.Read();
+            //host.Stop();
         }
 
         private static IWorkflowHost ConfigureWorkflowHost()
@@ -25,7 +31,7 @@ namespace WorkflowCoreSample.Runner
 
             var serviceProvider = services.BuildServiceProvider();
             var host = serviceProvider.GetService<IWorkflowHost>();
-            host.RegisterWorkflow<MainWorkflow>();
+            host.RegisterWorkflow<MainWorkflow, DataContext>();
             host.Start();
             return host;
         }

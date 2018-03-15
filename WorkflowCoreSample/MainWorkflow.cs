@@ -2,16 +2,22 @@
 
 namespace WorkflowCoreSample
 {
-    public class MainWorkflow : IWorkflow
+    public class MainWorkflow : IWorkflow<DataContext>
     {
-        public string Id => "Main Workflow";
+        public const string SID = "Main Workflow";
+
+        public string Id => SID;
         public int Version => 1;
 
-        public void Build(IWorkflowBuilder<object> builder)
+        public void Build(IWorkflowBuilder<DataContext> builder)
         {
             builder.StartWith<Start>()
+                    .Output(step => step.Name, data => data.Name)
                 .Then<ScanImage>()
-                .Then<Finish>();
+                    .Input(step => step.Name, data => data.Name)
+                    .Output(step => step.Name, data => data.Name)
+                .Then<Finish>()
+                    .Input(step => step.Message, data => $"\t{data.Name}, you are done.");
         }
     }
 }
