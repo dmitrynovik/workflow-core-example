@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using WorkflowCore.Interface;
@@ -11,7 +11,7 @@ namespace WorkflowCoreSample.Runner
         {
             var host = ConfigureWorkflowHost();
             var wId = host.StartWorkflow(MainWorkflow.SID, 1, null).Result;
-            Console.WriteLine($"Started {MainWorkflow.SID} instance with Id: {wId}");
+            Trace.TraceInformation($"Started {MainWorkflow.SID} instance with Id: {wId}");
 
             while (true)
             {

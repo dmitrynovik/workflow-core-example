@@ -11,13 +11,14 @@ namespace WorkflowCoreSample
 
         public void Build(IWorkflowBuilder<DataContext> builder)
         {
-            builder.StartWith<EnterName>()
+            builder.StartWith<SayHello>()
+                .Then<EnterName>()
                     .Output(step => step.Name, data => data.Name)
                 .Then<ScanImage>()
                     .Input(step => step.Name, data => data.Name)
                     .Output(step => step.Name, data => data.Name)
                 .Then<Finish>()
-                    .Input(step => step.Message, data => $"\t{data.Name}, you are done.");
+                    .Input(step => step.Message, data => $"Thank you {data.Name}, you are done.");
         }
     }
 }
