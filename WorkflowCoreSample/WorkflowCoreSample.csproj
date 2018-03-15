@@ -124,6 +124,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContext.cs" />
     <Compile Include="MainWorkflow.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

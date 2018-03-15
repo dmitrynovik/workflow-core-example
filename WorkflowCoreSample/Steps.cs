@@ -6,11 +6,6 @@ using WorkflowCore.Models;
 
 namespace WorkflowCoreSample
 {
-    public class DataContext
-    {
-        public string Name { get; set; }
-    }
-
     public class StepBase : StepBody
     {
         public override ExecutionResult Run(IStepExecutionContext context)
