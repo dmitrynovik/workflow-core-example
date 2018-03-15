@@ -14,19 +14,19 @@ namespace WorkflowCoreSample
         public void Build(IWorkflowBuilder<DataContext> builder)
         {
             builder.StartWith<SayHello>()
-                    .Output(step => step.Name, _ => "z")
+                    .Output(step => step.Name, _ => "some non-empty text")
                 .While(data => !string.IsNullOrEmpty(data.Name))
                     .Do(x => x                        
                         .StartWith<EnterName>()
                             .Output(step => step.Name, data => data.Name)
                         .If(data => !string.IsNullOrEmpty(data.Name))
-                        .Do(y => 
-                            y.StartWith<TakePhoto>()
-                                .Input(step => step.Name, data => data.Name)
-                                .Output(step => step.Name, data => data.Name)
-                                .OnError(WorkflowErrorHandling.Retry, TimeSpan.FromSeconds(2))
-                            .Then<FinishPerson>()
-                                .Input(step => step.Message, data => $"Thank you {data.Name}, you are done.")
+                            .Do(y => 
+                                y.StartWith<TakePhoto>()
+                                    .Input(step => step.Name, data => data.Name)
+                                    .Output(step => step.Name, data => data.Name)
+                                    .OnError(WorkflowErrorHandling.Retry, TimeSpan.FromSeconds(2))
+                                .Then<FinishPerson>()
+                                    .Input(step => step.Message, data => $"Thank you {data.Name}, you are done.")
                         )
                 )
                 .Then<SayGoodbye>();
