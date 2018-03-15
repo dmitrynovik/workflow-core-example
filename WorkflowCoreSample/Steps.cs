@@ -21,7 +21,7 @@ namespace WorkflowCoreSample
         protected virtual void RunImpl(IStepExecutionContext context) {  }
     }
 
-    public class Start : StepBase
+    public class EnterName : StepBase
     {
         public string Name { get; set; }
 

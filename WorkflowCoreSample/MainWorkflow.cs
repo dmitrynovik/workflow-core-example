@@ -11,7 +11,7 @@ namespace WorkflowCoreSample
 
         public void Build(IWorkflowBuilder<DataContext> builder)
         {
-            builder.StartWith<Start>()
+            builder.StartWith<EnterName>()
                     .Output(step => step.Name, data => data.Name)
                 .Then<ScanImage>()
                     .Input(step => step.Name, data => data.Name)
