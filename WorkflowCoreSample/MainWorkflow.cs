@@ -30,7 +30,7 @@ namespace WorkflowCoreSample
                                     .Output(data => data.Name, step => step.Name)
                                     // handle camera errors => retry
                                     // what it lacks here is the different handler / policy for different errors
-                                    .OnError(WorkflowErrorHandling.Retry, TimeSpan.FromSeconds(2))
+                                    //.OnError(WorkflowErrorHandling.Retry, TimeSpan.FromSeconds(2))
                                 // Say 'thank you' and loop to the next person:
                                 .Then<FinishPerson>()
                                     .Input(step => step.Message, data => $"Thank you {data.Name}, you are all done.")

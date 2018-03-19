@@ -11,7 +11,17 @@ namespace WorkflowCoreSample
         public override ExecutionResult Run(IStepExecutionContext context)
         {
             Trace.TraceInformation($"Executing {GetType()}");
-            RunImpl(context);
+            try
+            {
+                RunImpl(context);
+            }
+            catch (Exception e)
+            {
+                var color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(e);
+                Console.ForegroundColor = color;
+            }
             return ExecutionResult.Next();
         }
 
