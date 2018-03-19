@@ -10,9 +10,11 @@ namespace WorkflowCoreSample.Runner
         static void Main()
         {
             var host = ConfigureWorkflowHost();
-            var wId = host.StartWorkflow(MainWorkflow.Name, 1, null).Result;
-            Trace.TraceInformation($"Started {MainWorkflow.Name} instance with Id: {wId}");
+            const string workflowName = nameof(MainWorkflow);
+            var wId = host.StartWorkflow(workflowName, 1, null).Result;
+            Trace.TraceInformation($"Started {workflowName} instance with Id: {wId}");
 
+            // Imitate service host run:
             while (true)
             {
                 Thread.Sleep(1000);
